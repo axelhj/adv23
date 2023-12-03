@@ -22,7 +22,7 @@ def parse(input):
 budget = { "red": 12, "green": 13, "blue": 14 }
 
 def tally_ok(tally):
-    return tally["red"] <= budget["red"] and \
+    return tally["red"] <= budget["red"] and\
         tally["green"] <= budget["green"] and\
         tally["blue"] <= budget["blue"]
 
@@ -46,3 +46,19 @@ def process(game):
 # print (dumps(examplegames[0], indent=2))
 print("ex", sum([process(game) for game in parse(exampledata)]))
 print("real", sum([process(input) for input in parse(data)]))
+
+def cube_power(tally):
+    return tally["red"] * tally["green"] * tally["blue"]
+
+def process_part2(game):
+    tally = get_tally()
+    for move in game:
+        tally[move["color"]] += move["count"]
+        if move["turn"] == "end":
+            if not tally_ok(tally):
+                return 0
+            tally = get_tally()
+    return game[0]["id"]
+
+print("ex", sum([process_part2(game) for game in parse(exampledata)]))
+print("real", sum([process_part2(input) for input in parse(data)]))
