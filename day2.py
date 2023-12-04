@@ -43,9 +43,9 @@ def process(game):
             tally = get_tally()
     return game[0]["id"]
 
-# print (dumps(examplegames[0], indent=2))
-print("ex", sum([process(game) for game in parse(exampledata)]))
-print("real", sum([process(input) for input in parse(data)]))
+# print (dumps(exampledata, indent=2))
+print("ex", sum([process(parse(game)) for game in exampledata]))
+print("real", sum([process(parse(input)) for input in data]))
 
 def cube_power(tally):
     return tally["red"] * tally["green"] * tally["blue"]
@@ -53,12 +53,13 @@ def cube_power(tally):
 def process_part2(game):
     tally = get_tally()
     for move in game:
-        tally[move["color"]] += move["count"]
-        if move["turn"] == "end":
-            if not tally_ok(tally):
-                return 0
-            tally = get_tally()
-    return game[0]["id"]
+        if tally[move["color"]] < move["count"]:
+            tally[move["color"]] = move["count"]
+        # if move["turn"] == "end":
+            # if not tally_ok(tally):
+                # return 0
+            # tally = get_tally()
+    return cube_power(tally) 
 
-print("ex", sum([process_part2(game) for game in parse(exampledata)]))
-print("real", sum([process_part2(input) for input in parse(data)]))
+print("ex", sum([process_part2(parse(game)) for game in exampledata]))
+print("real", sum([process_part2(parse(input)) for input in data]))
